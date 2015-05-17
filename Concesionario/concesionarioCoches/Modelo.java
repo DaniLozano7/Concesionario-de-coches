@@ -1,12 +1,10 @@
-/**
- * Paquete que contiene los archivos del programa
- */
+
 package concesionarioCoches;
 /**
  * Enum que contiene los posibles modelos de los coches
+ * 
  * @author Daniel Lozano Torrico
  * @version 1.0
- *
  */
 public enum Modelo {
 	/**
@@ -59,7 +57,7 @@ public enum Modelo {
 	 * Metodo toString sobreescrito
 	 */
 	public String toString() {
-		return name() + ", " + getMarca();
+		return name();
 
 	}
 

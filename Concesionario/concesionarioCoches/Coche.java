@@ -1,6 +1,4 @@
-/**
- * Paquete que contiene los archivos del programa
- */
+
 package concesionarioCoches;
 
 import java.io.Serializable;
@@ -17,6 +15,10 @@ import java.util.regex.Pattern;
  *
  */
 public class Coche implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Cadena donde se guardara la matricula
 	 */
@@ -44,12 +46,12 @@ public class Coche implements Serializable{
 	 *            color seleccionado del menu
 	 * @param modelo
 	 *            modelo seleccionado del menu
-	 * @throws MatriculaNoValodaException
+	 * @throws MatriculaNoValidaException
 	 * @throws ColorNoValidoException
 	 * @throws ModeloNoValidoException
 	 */
 	Coche(String matricula, Color color, Modelo modelo)
-			throws MatriculaNoValodaException, ColorNoValidoException,
+			throws MatriculaNoValidaException, ColorNoValidoException,
 			ModeloNoValidoException {
 		super();
 		setMatricula(matricula);
@@ -62,9 +64,9 @@ public class Coche implements Serializable{
 	 * 
 	 * @param matricula
 	 *            matricula introducida por teclado
-	 * @throws MatriculaNoValodaException
+	 * @throws MatriculaNoValidaException
 	 */
-	Coche(String matricula) throws MatriculaNoValodaException {
+	public Coche(String matricula) throws MatriculaNoValidaException {
 		setMatricula(matricula);
 	}
 
@@ -75,7 +77,7 @@ public class Coche implements Serializable{
 	 *            matricula introducida por teclado
 	 * @return devuelve true si es válida la matricula o false si no es válida
 	 */
-	private static boolean esValida(String matricula) {
+	public static boolean esValida(String matricula) {
 		return patternMatricula.matcher(matricula).matches();
 	}
 
@@ -84,17 +86,25 @@ public class Coche implements Serializable{
 	 * 
 	 * @param matricula
 	 *            matrícula del coche
-	 * @throws MatriculaNoValodaException
+	 * @throws MatriculaNoValidaException
 	 *             excepción que salta cuando la matrícula no sea válida
 	 *             siguiendo el patrón
 	 */
 	private void setMatricula(String matricula)
-			throws MatriculaNoValodaException {
+			throws MatriculaNoValidaException {
 		if (esValida(matricula))
 			this.matricula = matricula;
 		else
-			throw new MatriculaNoValodaException("La matrícula no es válida");
+			throw new MatriculaNoValidaException("La matrícula no es válida");
 
+	}
+	
+	/**
+	 * Devuelve la matricula del vehiculo
+	 * @return matricula
+	 */
+	public String getMatricula(){
+		return matricula;
 	}
 
 	/**
@@ -102,7 +112,7 @@ public class Coche implements Serializable{
 	 * 
 	 * @return devuelve un color
 	 */
-	Color getColor() {
+	public Color getColor() {
 		return color;
 	}
 
@@ -136,6 +146,14 @@ public class Coche implements Serializable{
 		else
 			throw new ModeloNoValidoException("El modelo no es válido");
 
+	}
+	
+	/**
+	 * Devuelve el modelo del coche
+	 * @return modelo
+	 */
+	public Modelo getModelo(){
+		return modelo;
 	}
 
 	/*

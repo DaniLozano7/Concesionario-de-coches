@@ -1,9 +1,8 @@
-/**
- * Paquete que contiene los archivos del programa
- */
+
 package concesionarioCoches;
 /**
- * Enumenración que contiene las marcas posibles de los coches
+ * Enumeración que contiene las marcas posibles de los coches
+ *
  * @author Daniel Lozano Torrico
  * @version 1.0
  */

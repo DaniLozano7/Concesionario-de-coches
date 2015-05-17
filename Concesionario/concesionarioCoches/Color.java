@@ -1,9 +1,6 @@
-/**
- * Paquete que contiene los archivos del programa
- */
+
 package concesionarioCoches;
 
-//import pgn.examenMarzo.utiles.Menu;
 
 /**
  * Enum que contiene una lista de colores y los metodos necesarios para mostrarlos y elegir uno de ellos

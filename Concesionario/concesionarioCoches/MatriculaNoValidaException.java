@@ -7,15 +7,16 @@ package concesionarioCoches;
  *
  */
 
-public class ModeloNoValidoException extends Exception {
+public class MatriculaNoValidaException extends Exception {
 
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public ModeloNoValidoException(String message) {
-		super(message);
+	public MatriculaNoValidaException(String arg0) {
+		super(arg0);
 	}
 
 
