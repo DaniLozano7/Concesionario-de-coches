@@ -1,27 +1,37 @@
-package examenMarzo.concesionarioCoches;
+/**
+ * Paquete que contiene los archivos del programa
+ */
+package concesionarioCoches;
 
 //import pgn.examenMarzo.utiles.Menu;
 
 /**
- * Se limitarán los colores a tres: plata, rojo y azul. Para solicitar el color
- * al dar de alta al coche podrá implementarse un método pedirColor que mediante
- * la gestión de un menú, devolverá el color indicado
+ * Enum que contiene una lista de colores y los metodos necesarios para mostrarlos y elegir uno de ellos
  * 
  * @author Daniel Lozano Torrico
+ * @version 1.0
  * 
  */
 public enum Color {
-	PLATA, ROJO, AZUL;
-
 	/**
-	 * Lista de colores
+	 * Color plata
+	 */
+	PLATA,
+	/**
+	 * Color rojo
+	 */
+	ROJO, 
+	/**
+	 * Color Azul
+	 */
+	AZUL;
+	/**
+	 * Array que contiene el número de colores que tiene la enum
 	 */
 	private static final Color[] VALUES = Color.values();
-
 	/**
-	 * Metodo para generar las opciones del menu
-	 * 
-	 * @return String[]
+	 * Genera las opciones para un menu de colores
+	 * @return devuelve un array de cadenas con todas las opciones del menu
 	 */
 	public static String[] generarOpcionesMenu() {
 		String[] opcionesMenu = new String[getValues().length + 1];
@@ -32,11 +42,9 @@ public enum Color {
 		opcionesMenu[i] = "Salir";
 		return opcionesMenu;
 	}
-
 	/**
-	 * Devuelve un array de colores
-	 * 
-	 * @return Color[]
+	 * Metodo que devuelve un array de colores
+	 * @return devuelve el campo values
 	 */
 	public static Color[] getValues() {
 		return VALUES;

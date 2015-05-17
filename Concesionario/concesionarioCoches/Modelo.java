@@ -1,59 +1,75 @@
-package examenMarzo.concesionarioCoches;
-
 /**
- * 
+ * Paquete que contiene los archivos del programa
+ */
+package concesionarioCoches;
+/**
+ * Enum que contiene los posibles modelos de los coches
  * @author Daniel Lozano Torrico
  * @version 1.0
+ *
  */
 public enum Modelo {
-
+	/**
+	 * Modelo serie1
+	 */
 	SERIE1(Marca.BMW),
-
+	/**
+	 * Modelo serie2
+	 */
 	SERIE2(Marca.BMW),
-
+	/**
+	 * Modelo serie3
+	 */
 	SERIE3(Marca.BMW),
-
+	/**
+	 * Modelo serie5
+	 */
 	SERIE5(Marca.BMW),
-
+	/**
+	 * Modelo Cordoba
+	 */
 	CORDOBA(Marca.SEAT),
-
+	/**
+	 * Ibiza
+	 */
 	IBIZA(Marca.SEAT),
-
+	/**
+	 * Modelo Toledo
+	 */
 	TOLEDO(Marca.SEAT);
 	/**
-	 * Marca del coche
+	 * Marca del modelo
 	 */
 	private Marca marca;
 	/**
-	 * Constructor del modelo
-	 * @param marca Marca del vehiculo
+	 * contructor de la enumeración
+	 * @param marca marca correspondiente del modelo de coche
 	 */
 	private Modelo(Marca marca) {
 		this.marca = marca;
 	}
 	/**
-	 * Metodo para obtener la marca
-	 * @return Marca
+	 * Metodo get de la marca
+	 * @return devuelve la marca correspondiente a un modelo de coche
 	 */
 	public Marca getMarca() {
 		return marca;
 	}
 	/**
-	 * Muestra el modelo y la marca
+	 * Metodo toString sobreescrito
 	 */
 	public String toString() {
 		return name() + ", " + getMarca();
 
 	}
 
-	// Para el menú-------------------------------------------------
 	/**
-	 * Lista de modelos
+	 * Array de modelos que contiene las opciones para un menu
 	 */
 	private static final Modelo[] VALUES = Modelo.values();
 	/**
-	 * Metodo para generar las opciones del menu
-	 * @return Array de String
+	 * Metodo que genera las opciones de un menu de modelos de coches
+	 * @return devuelve un array de cadenas con los modelos posibles 
 	 */
 	static String[] generarOpcionesMenu() {
 		String[] opcionesMenu = new String[VALUES.length + 1];
@@ -65,12 +81,11 @@ public enum Modelo {
 		return opcionesMenu;
 	}
 	/**
-	 * Devuelve la lista de modelos
-	 * @return Array de Modelos
+	 * Metodo get del campo values
+	 * @return devuelve un array de modelo con todas las opciones de modelos de coches
 	 */
 	public static Modelo[] getValues() {
 		return VALUES;
 	}
-	// -------------------------------------------------
 
 }

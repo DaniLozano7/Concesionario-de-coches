@@ -1,26 +1,33 @@
-package examenMarzo.concesionarioCoches;
+/**
+ * Paquete que contiene los archivos del programa
+ */
+package concesionarioCoches;
 
+import java.io.Serializable;
+/**
+ * Importación de la clase ArrayList
+ */
 import java.util.ArrayList;
 
-/*
- * No pueden existir dos coches con la misma matrícula en el almacén del concesinario
- * no puede añadirse un coche al concecionario con alguno de sus atributos inválidos. Han de conocerse todas sus características 
- * Ninguno de los valores puede ser por defecto
- */
 /**
- * El nombre del concesionario es "IES Gran Capitán".
- * 
- * Lógicamente, no podrá añadirse un coche inválido glmacén del concesinario)
- * 
- * Han de conocerse todas sus características Ninguno de los valores puede ser
- * por defecto
+ * Concesionario que almacena coches, los coches no pueden tener igual matricula
+ * y deben de contener todos los campos especificados en la clase coche
  * 
  * @author Daniel Lozano Torrico
+ * @version 1.0
  * 
  */
-public class Concesionario {
+public class Concesionario implements Serializable{
 	/**
-	 * Colección de coches
+	 * Campo que me añadio en el warming
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * Campo que controla si el concesionario ha sido modificado
+	 */
+	private boolean modificado = false;
+	/**
+	 * Lista de coches parametrizada de tipo coche
 	 */
 	private ArrayList<Coche> almacen = new ArrayList<Coche>();
 	/**
@@ -29,53 +36,92 @@ public class Concesionario {
 	private final String nombre = "IES Gran Capitán";
 
 	/**
-	 * Metodo para añadir coche con tres parametros
+	 * Metodo para añadir un coche a la lista
 	 * 
-	 * @param matricula Matricula indicada
-	 * @param color Color indicado
-	 * @param modelo Modelo indicado
-	 * @return boolean
+	 * @param matricula
+	 *            matricula del coche
+	 * @param color
+	 *            color del coche
+	 * @param modelo
+	 *            modelo del coche
+	 * @return true si el coche pudo añadirse a la lista o false si no pudo
+	 *         añadirse
+	 * @throws ModeloNoValidoException
+	 * @throws ColorNoValidoException
+	 * @throws MatriculaNoValodaException
+	 * @throws CocheYaExistenteException
 	 */
-	boolean annadir(String matricula, Color color, Modelo modelo) {
-		Coche coche = Coche.instanciarCoche(matricula, color, modelo);
-		if (coche == null || almacen.contains(coche))
-			return false;
+	boolean annadir(String matricula, Color color, Modelo modelo)
+			throws MatriculaNoValodaException, ColorNoValidoException,
+			ModeloNoValidoException, CocheYaExistenteException {
+		Coche coche = new Coche(matricula, color, modelo);
+		if (almacen.contains(coche))
+			throw new CocheYaExistenteException("El coche ya existe");
+			setModificado(true);
 		return almacen.add(coche);
 	}
 
 	/**
-	 * Metodo para eliminar coche
-	 * 
-	 * @param matricula Matricula indicada
-	 * @return boolean
+	 * @param modificado the modificado to set
 	 */
-	boolean eliminar(String matricula) {
-		return almacen.remove(Coche.instanciarCoche(matricula));
+	public void setModificado(boolean modificado) {
+		this.modificado = modificado;
 	}
 
 	/**
-	 * Metodo que devuelve el tamaño del almacen
+	 * @return the modificado
+	 */
+	public boolean isModificado() {
+		return modificado;
+	}
+
+	/**
+	 * Metodo que elimina un coche de la lista
 	 * 
-	 * @return Tamaño del almacen (int)
+	 * @param matricula
+	 *            matricula del coche a eliminar
+	 * @return devuelve true si el coche se elimino y false si no se pudo
+	 *         eliminar
+	 * @throws MatriculaNoValodaException
+	 * @throws CocheNoExistenteException
+	 */
+	boolean eliminar(String matricula) throws MatriculaNoValodaException,
+			CocheNoExistenteException {
+		Coche coche = new Coche(matricula);
+		if (almacen.contains(coche)){
+			setModificado(true);
+			return almacen.remove(coche);
+		}else
+			throw new CocheNoExistenteException("El coche no existe");
+
+	}
+
+	/**
+	 * Metodo que devuelve el tamaño de la lista
+	 * 
+	 * @return el tamaño de la lista con un int
 	 */
 	int size() {
 		return almacen.size();
 	}
 
 	/**
-	 * Devuelve el Coche del almacén indicado por la matrícula
+	 * Devuelve el Coche de la lista indicando la matricula
 	 * 
 	 * @param matricula
-	 *            Matrícula a buscar
-	 * @return Coche contenido en el almacén. Null si no existe
+	 *            matricula del coche a buscar
+	 * @return Coche contenido en el almacén. null si no existe
+	 * @throws MatriculaNoValodaException
+	 * @throws CocheNoExistenteException
 	 */
-	Coche get(String matricula) {
-		Coche coche = Coche.instanciarCoche(matricula);
+	Coche get(String matricula) throws MatriculaNoValodaException,
+			CocheNoExistenteException {
+		Coche coche = new Coche(matricula);
 		int index = almacen.indexOf(coche);
 		if (index != -1) {
 			return almacen.get(index);
 		}
-		return null;
+		throw new CocheNoExistenteException("El coche no existe");
 	}
 
 	/*
@@ -89,10 +135,12 @@ public class Concesionario {
 	}
 
 	/**
-	 * Muestra coches por color
+	 * Metodo que devuelve una lista de coches de un mismo color
 	 * 
-	 * @param color Color indicado
-	 * @return ArrayList de coches
+	 * @param color
+	 *            color seleccionado en un menu
+	 * @return devuelve un ArrayList de coches con todos los coches del mismo
+	 *         color
 	 */
 	public ArrayList<Coche> getCochesColor(Color color) {
 		ArrayList<Coche> arrCochesColor = new ArrayList<Coche>();

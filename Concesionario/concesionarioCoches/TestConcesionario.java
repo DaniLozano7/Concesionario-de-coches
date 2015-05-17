@@ -1,43 +1,47 @@
-package examenMarzo.concesionarioCoches;
-
-import examenMarzo.utiles.Menu;
-import examenMarzo.utiles.Teclado;
-import examenMarzo.concesionarioCoches.Color;
-import examenMarzo.concesionarioCoches.Modelo;
-
 /**
- * Queremos modelar un concesionario de coches en Java. Nos limitaremos a las
- * siguientes opciones: Añadir un coche (se pedirá matricula, color y modelo),
- * Eliminar un coche (por matrícula), mostrar un coche (por matrícula), mostrar
- * coches (todo el concesionario)
- * 
- * @author Daniel Lozano Torrico
  * 
  */
-public class TestConcesionario extends Concesionario {
-	/**
-	 * Menu principal
-	 */
+package concesionarioCoches;
+
+import java.io.IOException;
+
+import utiles.Fichero;
+import utiles.Menu;
+import utiles.Teclado;
+
+/**
+ * TestConcesionario
+ * @author Daniel Lozano Torrico
+ * @version 1.0
+ *
+ */
+public class TestConcesionario {
 	static Menu menu = new Menu("Concesionario de coches", new String[] {
 			"Alta Coche", "Baja Coche", "Mostrar Coche",
 			"Mostrar concesionario", "Contar coches del concesionario",
-			"Mostrar coches de un color", "Salir" });
+			"Mostrar coches de un color", "Salir", "Fichero" });
 	/**
-	 * Menu para los colores
+	 * 
+	 */
+	static Menu menuFichero = new Menu("Menu de ficheros", new String[] {
+			"Nuevo", "Abrir", "Guardar", "Guardar como..." });
+	/**
+	 * Menu que contiene los colores
 	 */
 	private static Menu menuColores = new Menu("Colores de los coches",
 			Color.generarOpcionesMenu());
 	/**
-	 * Menu para los modelos
+	 * Menu que contiene los modelos
 	 */
 	private static Menu menuModelos = new Menu("Modelos de los coches",
 			Modelo.generarOpcionesMenu());
 	/**
-	 * Instanciacion del concesionario
+	 * Lista donde guardaremos los coches
 	 */
 	static Concesionario concesionario = new Concesionario();
 
 	public static void main(String[] args) {
+
 		do {
 			switch (menu.gestionar()) {
 			case 1:// "Añadir Coche
@@ -60,6 +64,10 @@ public class TestConcesionario extends Concesionario {
 				System.out.println(concesionario.getCochesColor(pedirColor()));
 				break;
 
+			case 8:
+				realizarOpcion(menuFichero.gestionar());
+				break;
+
 			default:// Salir
 				System.out.println("Aaaaaaaaaaaaaaaaaaaaadios");
 				return;
@@ -68,46 +76,137 @@ public class TestConcesionario extends Concesionario {
 	}
 
 	/**
-	 * Metodo que devuelve un coche determinado buscando la matricula Indica si
-	 * la operacion ha sido exitosa o no
+	 * 
+	 * @param opcion
+	 *            opcion del menú
+	 */
+	private static void realizarOpcion(int opcion) {
+		char caracter;
+		switch (opcion) {
+		case 1:
+			try {
+				if (!concesionario.isModificado()) {
+					concesionario = new Concesionario();
+					System.out.println(Fichero.nuevo());
+				} else {
+					do {
+						caracter = Character
+								.toUpperCase(Teclado
+										.leerCaracter("No has guardado. Desea guardar?"));
+					} while (!(caracter == 'S' || caracter == 'N'));
+					if (caracter == 'S') {
+						Fichero.guardar(concesionario);
+						concesionario = new Concesionario();
+						System.out.println(Fichero.nuevo());
+					} else {
+						concesionario = new Concesionario();
+						System.out.println(Fichero.nuevo());
+					}
+				}
+
+			} catch (IOException e3) {
+				System.out.println(e3.getMessage());
+			}
+			break;
+
+		case 2:
+			try {
+				if (!concesionario.isModificado()) {
+					concesionario = (Concesionario) Fichero
+							.abrir(concesionario);
+				} else {
+					do {
+						caracter = Character
+								.toUpperCase(Teclado
+										.leerCaracter("No has guardado. Desea guardar?"));
+					} while (!(caracter == 'S' || caracter == 'N'));
+					if (caracter == 'S') {
+						Fichero.guardar(concesionario);
+						concesionario = (Concesionario) Fichero
+								.abrir(concesionario);
+					} else {
+						concesionario = (Concesionario) Fichero
+								.abrir(concesionario);
+					}
+				}
+			} catch (ClassNotFoundException | IOException e2) {
+				System.out.println(e2.getMessage());
+			}
+
+			break;
+		case 3:
+			try {
+				Fichero.guardar(concesionario);
+				System.out.println("Archivo guardado");
+			} catch (IOException e1) {
+				System.out.println(e1.getMessage());
+			}
+			break;
+		case 4:
+			try {
+				Fichero.guardarComo(concesionario);
+				System.out.println("Archivo guardado");
+			} catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
+			break;
+		}
+	}
+
+	/**
+	 * Metodo que devuelve un coche introduciendo la matricula correspondiente
 	 */
 	private static void getCoche() {
-		Coche coche = concesionario.get(Teclado
-				.leerCadena("Introduce la matrícula"));
-		if (coche == null)
-			System.out.println("No existe el coche en el concesionario.");
-		else
+		Coche coche;
+		try {
+			coche = concesionario.get(Teclado
+					.leerCadena("Introduce la matrícula"));
 			System.out.println(coche);
+		} catch (MatriculaNoValodaException e) {
+			System.out.println(e.getMessage());
+		} catch (CocheNoExistenteException e) {
+			System.out.println(e.getMessage());
+		}
+
 	}
 
 	/**
-	 * Metodo que elimina un coche usando la matricula Indica si la operacion ha
-	 * sido exitosa o no
+	 * Metodo que elimina un coche de la lista
 	 */
 	private static void eliminarCoche() {
-		if (concesionario
-				.eliminar(Teclado.leerCadena("Introduce la matrícula")))
+		try {
+			concesionario
+					.eliminar(Teclado.leerCadena("Introduce la matrícula"));
 			System.out.println("Coche eliminado");
-		else
-			System.out.println("No se ha podido eliminar");
+		} catch (MatriculaNoValodaException | CocheNoExistenteException e) {
+			System.out.println(e.getMessage() + " No se ha podido eliminar");
+		}
 	}
 
 	/**
-	 * Metodo que añade un coche, introduciendo matricula, color y modelo Indica
-	 * si la operacion ha sido exitosa o no
+	 * Metodo que añade un coche a la lista
 	 */
 	private static void annadirCoche() {
-		if (concesionario.annadir(Teclado.leerCadena("Introduce la matrícula"),
-				pedirColor(), pedirModelo()))
+		try {
+			concesionario.annadir(Teclado.leerCadena("Introduce la matrícula"),
+					pedirColor(), pedirModelo());
 			System.out.println("Coche añadido con éxito");
-		else
-			System.out.println("No se ha podido añadir");
+
+		} catch (MatriculaNoValodaException e) {
+			System.out.println(e.getMessage());
+		} catch (ColorNoValidoException e) {
+			System.out.println(e.getMessage());
+		} catch (ModeloNoValidoException e) {
+			System.out.println(e.getMessage());
+		} catch (CocheYaExistenteException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	/**
-	 * Metodo que selecciona el modelo del coche. Utiliza una enumeracion
+	 * Metodo que solicita un modelo de coche
 	 * 
-	 * @return Modelo
+	 * @return devuelve un modelo de coche
 	 */
 	private static Modelo pedirModelo() {
 		int opcion = menuModelos.gestionar();
@@ -118,9 +217,9 @@ public class TestConcesionario extends Concesionario {
 	}
 
 	/**
-	 * Metodo que selecciona el color del coche. Utiliza una enumeracion
+	 * Metodo que solicita un color de coche
 	 * 
-	 * @return Color
+	 * @return devuelve un color de coche
 	 */
 	private static Color pedirColor() {
 		int opcion = menuColores.gestionar();

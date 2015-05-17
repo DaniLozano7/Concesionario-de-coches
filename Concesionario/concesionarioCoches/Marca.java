@@ -1,9 +1,19 @@
-package examenMarzo.concesionarioCoches;
 /**
- * Marcas de los coches del concesionario
+ * Paquete que contiene los archivos del programa
+ */
+package concesionarioCoches;
+/**
+ * Enumenración que contiene las marcas posibles de los coches
  * @author Daniel Lozano Torrico
- *
+ * @version 1.0
  */
 public enum Marca {
-	BMW, SEAT
+	/**
+	 * Marca BMW
+	 */
+	BMW, 
+	/**
+	 * Marca SEAT
+	 */
+	SEAT
 }
